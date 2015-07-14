@@ -1,0 +1,92 @@
+\documentclass[a4paper,12pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{authblk}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{dsfont}
+\usepackage{bm}
+\usepackage{mdframed}
+\usepackage{amsthm}
+\usepackage{xfrac}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+
+\newcommand{\p}[1]{\mathds{P}\left\{#1 \right\}}
+\newcommand{\pp}[1]{\mathds{P}_{\phi} \left\{#1 \right\}}
+\newcommand{\pth}[1]{\mathds{P}_{\vartheta} \left\{#1 \right\}}
+\newcommand{\pph}[1]{\mathds{P}_{\phi_h} \left\{#1 \right\}}
+\newcommand{\ppt}[1]{\mathds{P}_{\phi_t} \left\{#1 \right\}}
+\newcommand{\e}[1]{\mathds{E}[#1]}
+
+\newcommand{\fca}{\phi_{\text{case}}}
+\newcommand{\fco}{\phi_{\text{control}}}
+
+%opening
+\title{Confidence intervals}
+\author{Louis Dijkstra}
+
+\begin{document}
+
+\maketitle
+
+Suppose we observed $k$ internal segment lengths, $x = (x_1, x_2, \dots, x_k)$, and $l$ overlapping alignments, $y = (y_1, y_2, \dots, y_l)$, where $y_j$ is $1$ when the alignment does support the presence of the indel of interest and $0$ otherwise. Consider the following likelihood function for the parameter $\theta \in [0,1]$ (representing the variant allele frequency):
+\begin{equation}
+ L(\theta ; x, y) = \prod_{i=1}^k g_i (x_i ; \theta) \times \prod_{j = 1}^l h_j (y_i ; \theta), 
+\end{equation}
+where 
+\begin{equation}
+ g_i (x_i ; \theta) = \pi_i^{(X)} \left[\theta f_{\mu + \delta} (x_i) + (1 - \theta) f_{\mu}(x_i)\right] + \left(1 - \pi_i^{(X)}\right) u(x_i)
+\end{equation}
+and 
+\begin{equation}
+ h_j (y_j ; \theta) = \pi_j^{(Y)} \theta^{y_j} (1 - \theta)^{1 - y_j} + \left(1 - \pi_j^{(Y)}\right) v(y_j). 
+\end{equation}
+The probability mass functions $f_{\mu + \delta}(\cdot)$ and $f_{\mu}(\cdot)$ describe the internal segment length distribution when the alignment stems from a chromosome with and without the indel of variant length $\delta$ present. It is defined as 
+\begin{equation}
+ f_{\lambda} (x) := \frac{\Phi \left( \frac{x + 1 - \lambda}{\sigma} \right) - \Phi \left( \frac{x - \lambda}{\sigma} \right)}{ 1 - \Phi \left( \frac{- \lambda}{\sigma} \right)}
+\end{equation}
+where $\Phi(\cdot)$ is the standard normal cumulative distribution function. The functions $u(\cdot)$ and $v(\cdot)$ denote the distributions of the observations when the alignments do not stem from the locus of interest. These distributions are unknown, but need to be chosen such that they do not influence the posterior distribution of $\theta$. A reasonable choice is, therefore: 
+$$
+  u(z) \propto 1 \qquad \text{and} \qquad v(z) \propto 1. 
+$$
+(which we can prove. Do so!).
+
+The loglikelihood function is easily found to be 
+\begin{equation}
+ \ell(\theta; x, y) = \sum_{i=1}^k \log g_i(x_i; \theta) + \sum_{j=1}^l \log h_j (y_j; \theta).
+\end{equation}
+(Show that a global maximum exists!). 
+Let $\widehat{\theta}$ be the maximum likelihood estimate of $\theta$, i.e., 
+$$
+  L(\widehat{\theta}; x, y) \geq L(\theta; x, y) \qquad \text{for all }\theta \in [0,1].
+$$
+
+\section*{Likelihood ratio method for constructing CIs}
+The $100 (1 - \alpha)$\% confidence interval contains all $\theta$'s in $[0,1]$ for which 
+\begin{equation}
+ 2 \left[\ell(\widehat{\theta}; x, y) - \ell(\theta; x, y) \right] \leq F^{-1}(1 - \alpha)
+\end{equation}
+where $F^{-1}$ is the inverse cumulative distribution function of the $\chi^2$ distribution with $1$ degree of freedom. There are two values that satisfy the equality\footnote{In case of $\alpha = 5\%$, $F^{-1}(.95) \approx 3.84$.}: 
+$$
+  2 \left[\ell(\widehat{\theta}; x, y) - \ell(\theta; x, y) \right] = F^{-1}(1 - \alpha).
+$$
+\begin{enumerate}
+ \item one in the interval $[0, \widehat{\theta}) \rightarrow \widehat{\theta}_{low}$, 
+ \item one in the interval $(\widehat{\theta}, 1] \rightarrow \widehat{\theta}_{high}$.
+\end{enumerate}
+We can determine these numerically. The CI is then 
+$$
+  [\widehat{\theta}_{low}, \widehat{\theta}_{high}]. 
+$$
+
+
+
+
+
+
+
+
+\end{document}

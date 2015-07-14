@@ -1,0 +1,4 @@
+/ufs/dijkstra/Projects/somatic-mutation-caller/bin/sm_caller
+/ufs/dijkstra/Projects/somatic-mutation-caller/include/config.h
+/ufs/dijkstra/Projects/somatic-mutation-caller/include/smc_input.h
+/ufs/dijkstra/Projects/somatic-mutation-caller/include/smc_likelihood.h

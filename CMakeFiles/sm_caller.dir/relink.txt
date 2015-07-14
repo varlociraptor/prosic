@@ -1,0 +1,1 @@
+/usr/bin/cc      CMakeFiles/sm_caller.dir/src/smc_likelihood.c.o CMakeFiles/sm_caller.dir/src/smc_input.c.o CMakeFiles/sm_caller.dir/src/smc_main.c.o  -o CMakeFiles/CMakeRelink.dir/sm_caller -rdynamic -lgsl -lgslcblas -lm -lgmp 

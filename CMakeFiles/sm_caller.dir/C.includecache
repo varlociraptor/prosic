@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/ufs/dijkstra/Projects/somatic-mutation-caller/src/smc_input.c
+smc_input.h
+/ufs/dijkstra/Projects/somatic-mutation-caller/src/smc_input.h
+
+/ufs/dijkstra/Projects/somatic-mutation-caller/src/smc_input.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+stddef.h
+-
+unistd.h
+-
+float.h
+-
+
