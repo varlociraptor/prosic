@@ -57,6 +57,8 @@ class BAMProcessor:
 		for alignment in self.bam_reader.fetch(deletion.chromosome, max(0, deletion.start - 1 - self.search_range), deletion.end + 1 + self.search_range):
 			if alignment.isize == 0: # alignment is unmapped
 				continue
+                        if self.primary_alignments_only and (alignment.is_secondary): ## (XXX) construction site
+                                continue
 			# determine whether this individual read is relevant 			
 			if alignment.positions[0] < min(deletion.centerpoints) and alignment.positions[-1] > max(deletion.centerpoints): # read overlaps the centerpoints of the deletion 
 				splits.append(self.determineSupportDeletionSingleAlignment(deletion, alignment))
@@ -90,6 +92,8 @@ class BAMProcessor:
 		for alignment in self.bam_reader.fetch(insertion.chromosome, max(0, insertion.position - self.search_range), insertion.position + 1 + self.search_range):
 			if alignment.isize == 0: # alignment is unmapped
 				continue
+                        if self.primary_alignments_only and (alignment.is_secondary): ## (XXX) construction site
+                                continue
 			# determine whether this individual read is relevant 			
 			if alignment.positions[0] < insertion.position and alignment.positions[-1] > insertion.position:
 				splits.append(self.determineSupportInsertionSingleAlignment(insertion, alignment))
