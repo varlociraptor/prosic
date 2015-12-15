@@ -24,8 +24,7 @@ Installation
 
 In order to compile the C-code in the folder `src/`, simply type in the main directory: 
 
-	$ cmake CMakeLists.txt
-        $ make
+	$ cmake CMakeLists.txt && make
 
 The executable `sm_caller` will be placed in the `bin/` folder together with the Python scripts.   
 
