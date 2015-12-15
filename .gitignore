@@ -4,3 +4,8 @@ literature/*
 *~
 *.pyc
 .snakemake/*
+CMakeCache.txt
+CMakeFiles
+Makefile
+bin/sm_caller
+cmake_install.cmake
