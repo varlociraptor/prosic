@@ -36,15 +36,15 @@ def determinePlatypusVAFs (gt_tumour, gt_control):
         
         if gt_tumour == '0/0':
                 c_vaf = 0.0
-        elif gt_tumour == '0/1':
+        elif gt_tumour in ['0/1','1/0']:
                 c_vaf = 0.5
         elif gt_tumour == '1/1':
                 c_vaf = 1.0
         else:
                 c_vaf = 'UNKNOWN'
-        if gt_conrol == '0/0':
+        if gt_control == '0/0':
                 h_vaf = 0.0
-        elif gt_control == '0/1':
+        elif gt_control in ['0/1','1/0']:
                 h_vaf = 0.5
         elif gt_control == '1/1':
                 h_vaf = 1.0
@@ -72,17 +72,27 @@ def main():
 	vcf_writer 		= vcf.Writer(open(new_vcf_filename, 'w'), vcf_reader)
 
         for vcf_record in vcf_reader:
+
+                if vcf_record.FILTER != 'PASS':
+                        continue
+                if len(vcf_record.ALT) > 1:
+                        continue
                 
                 cancer_gt, healthy_gt = vcf_record.samples[0]['GT'], vcf_record.samples[1]['GT']
+
+                if cancer_gt == './.' or healthy_gt == './.':
+                        continue
+                
                 call, post_prob_call = makeDKFZPlatypusCall(cancer_gt, healthy_gt)
                 c_vaf, h_vaf = determinePlatypusVCFs(cancer_gt, healthy_gt)
 
-		vcf_record = vcf_reader.next() 
+#		vcf_record = vcf_reader.next() 
 
 		vcf_record.INFO['CALL'] 		= call 
 		vcf_record.INFO['POSTERIOR_PROB'] 	= post_prob_call
 		vcf_record.INFO['MAP_HEALTHY_VAF'] 	= h_vaf
 		vcf_record.INFO['MAP_CANCER_VAF'] 	= c_vaf
+                
 		vcf_writer.write_record(vcf_record)
 
 #	for vcf_record in vcf_reader:
