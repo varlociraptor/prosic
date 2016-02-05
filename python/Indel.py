@@ -64,7 +64,7 @@ def returnIndelLength (vcf_record):
 		else:
 			return abs(int(vcf_record.INFO['SVLEN'])) 
 	else:
-		return abs(len(vcf_record.REF) + 1 - len(vcf_record.ALT[0]))
+		return abs(len(vcf_record.REF) - len(vcf_record.ALT[0]))
 
 def getDelta (vcf_record):
 	"""Returns the delta (variant length) of an indel. Is positive in case of a deletion and negative for an insertion."""
