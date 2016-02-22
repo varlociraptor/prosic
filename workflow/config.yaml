@@ -1,0 +1,12 @@
+reference: data/hg19.fasta
+
+datasets:
+  # Tumor-Normal cell-line data from Illumina Basespace
+  HCC1187C-vs-HCC1187BL:
+    tumor: data/HCC1187C_S1.bam
+    normal: data/HCC1187BL_S1.bam
+
+params:
+  default:
+    platypus: ""
+    sm_caller: ""
