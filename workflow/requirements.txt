@@ -4,3 +4,4 @@ pyvcf
 pysam
 numpy
 picard
+htslib

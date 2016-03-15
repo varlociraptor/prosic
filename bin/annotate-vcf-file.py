@@ -76,10 +76,10 @@ def main():
 			# make call
 			call, post_prob_call = makeCall(p_somatic, p_germline, p_not_present)
 
-		vcf_record = vcf_reader.next() 
+		vcf_record = next(vcf_reader)
 		while (vcf_record.POS != position):
 			vcf_writer.write_record(vcf_record)
-			vcf_record = vcf_reader.next()
+			vcf_record = next(vcf_reader)
 
 		vcf_record.INFO['CALL'] 		= call 
 		vcf_record.INFO['POSTERIOR_PROB'] 	= post_prob_call
