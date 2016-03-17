@@ -5,14 +5,17 @@ datasets:
   HCC22118C-vs-HCC22118BL:
     tumor: "../../data/basemount/Projects/HiSeq 2000: Tumor Normal WGS (HCC1187 & HCC2218)/AppResults/Tumor Sample/Files/HCC2218C_S1.bam"
     normal: "../../data/basemount/Projects/HiSeq 2000: Tumor Normal WGS (HCC1187 & HCC2218)/AppResults/Normal Sample/Files/HCC2218BL_S1.bam"
+    aligner: "default"
   HCC1187C-vs-HCC1187BL:
     tumor: "../../data/basemount/Projects/HiSeq 2000: Tumor Normal WGS (HCC1187 & HCC2218)/AppResults/Tumor Sample (2)/Files/HCC1187C_S1.bam"
     normal: "../../data/basemount/Projects/HiSeq 2000: Tumor Normal WGS (HCC1187 & HCC2218)/AppResults/Normal Sample (2)/Files/HCC1187BL_S1.bam" 
+    aligner: "default"
+
 
 params:
   dkfz:
     platypus: "--genIndels=1 --genSNPs=1 --maxReads=10000000"
     sm_caller: "-m 112.0 -s 14.826 -r 0.01332338 -y 0.00001 -e 0.0310 -E 0.2138"
   assemble:
-    platypus: "--genIndels=1 --genSNPs=1 --assemble=1"
+    platypus: "--genIndels=1 --genSNPs=1 --maxReads=10000000 --assemble=1"
     sm_caller: "-m 112.0 -s 14.826 -r 0.01332338 -y 0.00001 -e 0.0310 -E 0.2138"

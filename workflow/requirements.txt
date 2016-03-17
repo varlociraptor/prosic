@@ -1,7 +1,0 @@
-snakemake
-pyyaml
-pyvcf
-pysam
-numpy
-picard
-htslib

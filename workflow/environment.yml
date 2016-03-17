@@ -1,0 +1,9 @@
+channels:
+  - bioconda
+dependencies:
+  - snakemake
+  - pyyaml
+  - pyvcf
+  - pysam
+  - numpy
+  - picard
