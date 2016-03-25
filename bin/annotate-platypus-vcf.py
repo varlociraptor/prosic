@@ -91,7 +91,7 @@ def main():
 #                        print("multilalelic site", file=sys.stderr)
                         continue
                 
-                cancer_gt, healthy_gt = vcf_record.genotype(options.tumor), vcf_record.genotype(options.normal)
+                cancer_gt, healthy_gt = vcf_record.genotype(options.tumor)["GT"], vcf_record.genotype(options.normal)["GT"]
                 
                 if not (cancer_gt and healthy_gt):
                         print("One genotype = ./.:", vcf_record.CHROM, vcf_record.POS, file=sys.stderr)
