@@ -61,6 +61,8 @@ def determinePlatypusVAFs (gt_tumour, gt_control):
 def main():
 
 	parser = OptionParser(usage=usage)
+        parser.add_option("--tumor", help="Tumor sample name.")
+        parser.add_option("--normal", help="Normal sample name.")
 	parser.add_option("-v", action="store_true", dest="verbose", default=False,
                       		help="Verbose. Prints regularly how many variants have been processed.")
 	(options, args) = parser.parse_args()
@@ -89,7 +91,7 @@ def main():
 #                        print("multilalelic site", file=sys.stderr)
                         continue
                 
-                cancer_gt, healthy_gt = vcf_record.samples[0]['GT'], vcf_record.samples[1]['GT']
+                cancer_gt, healthy_gt = vcf_record.genotype(options.tumor), vcf_record.genotype(options.normal)
                 
                 if not (cancer_gt and healthy_gt):
                         print("One genotype = ./.:", vcf_record.CHROM, vcf_record.POS, file=sys.stderr)

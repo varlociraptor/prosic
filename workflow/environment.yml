@@ -4,6 +4,6 @@ dependencies:
   - snakemake
   - pyyaml
   - pyvcf
-  - pysam
+  - pysam ==0.9.0
   - numpy
   - picard
