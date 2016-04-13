@@ -1,1 +1,0 @@
-/export/scratch1/home/as/miniconda2/pkgs/zlib-1.2.8-0/include/zlib.h
