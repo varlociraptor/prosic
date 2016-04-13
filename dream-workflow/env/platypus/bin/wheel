@@ -1,0 +1,6 @@
+#!/export/scratch2/as/somatic-mutation-caller/workflow/env/platypus/bin/python
+if __name__ == '__main__':
+    import sys
+    import wheel.tool
+
+    sys.exit(wheel.tool.main())

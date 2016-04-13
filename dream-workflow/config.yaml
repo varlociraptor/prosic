@@ -1,0 +1,11 @@
+reference: ../../data/ref/hg19.ucsc.fa
+
+
+
+params:
+  dkfz:
+    platypus: "--genIndels=1 --genSNPs=1 --maxReads=10000000"
+    sm_caller: "-m 112.0 -s 14.826 -r 0.01332338 -y 0.00001 -e 0.0310 -E 0.2138"
+  assemble:
+    platypus: "--genIndels=1 --genSNPs=1 --maxReads=10000000 --assemble=1"
+    sm_caller: "-m 112.0 -s 14.826 -r 0.01332338 -y 0.00001 -e 0.0310 -E 0.2138"
