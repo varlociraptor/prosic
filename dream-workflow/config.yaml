@@ -1,5 +1,3 @@
-reference: ../../data/ref/hg19.ucsc.fa
-
 params:
 	all-alon: "-m 112.0 -s 14.826 -r 0.01332338 -y 0.00001 -e 0.0310 -E 0.2138"
 	all-aloff: "-m 112.0 -s 14.826 -r 0.01332338 -y 0.00001 -e 0.0310 -E 0.2138 -u"
