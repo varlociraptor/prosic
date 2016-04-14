@@ -12,6 +12,7 @@ usage = """%prog [options] <annotated-vcf-file> <dream-vcf-file>
 	<annotated-vcf-file> 	tabix-indexed, self-annotated (by annotate-* script) VCF file 
         <dream-vcf-file> 	dream challenge compatible VCF file
         <method-name>           name as listed in the challenge
+        <minmapp>               minimum a posteriori probability required for passing as somatic
 
         The format of <dream-vcf-file> is mandatory for the dream challenge. 
 
@@ -27,13 +28,14 @@ def main():
     parser = OptionParser(usage=usage)
     (options, args) = parser.parse_args()
 
-    if (len(args)!=3):
+    if (len(args)!=4):
         parser.print_help()
         return 1
 
     annotated_vcf_filename = os.path.abspath(args[0])
     dream_vcf_filename = os.path.abspath(args[1])
     methodname = args[2]
+    minmapp = float(args[3])
     
     vcf_reader = vcf.Reader(open(annotated_vcf_filename))
     dream_vcf = open(dream_vcf_filename, 'w')
@@ -70,9 +72,13 @@ def main():
         #print(chrom, pos, idd, ref, alt, qual, filterr, info['CALL'], svlen, endpos)
         
         somatic = (info['CALL'][0] == 'SOMATIC')
-
+        
         if not somatic:
             continue
+        else:
+            posteriorprob = float(info['POSTERIOR_PROB'][0])
+            if posteriorprob < minmapp:
+                continue
         
         i += 1
         if (i % 100 == 0):
