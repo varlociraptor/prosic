@@ -59,7 +59,9 @@ class BAMProcessor:
 				continue
 			if self.primary_alignments_only and (alignment.is_secondary): ## (XXX) construction site
 				continue
-			# determine whether this individual read is relevant 			
+			# determine whether this individual read is relevant 		
+			if alignment.positions == []:
+				continue	
 			if alignment.positions[0] < min(deletion.centerpoints) and alignment.positions[-1] > max(deletion.centerpoints): # read overlaps the centerpoints of the deletion 
 				splits.append(self.determineSupportDeletionSingleAlignment(deletion, alignment))
 				splits_prob.append(1.0 - convertPhredScore(alignment.mapq))
@@ -94,7 +96,9 @@ class BAMProcessor:
 				continue
 			if self.primary_alignments_only and (alignment.is_secondary): ## (XXX) construction site
 				continue
-			# determine whether this individual read is relevant 			
+			# determine whether this individual read is relevant 		
+			if alignment.positions == []:
+				continue	
 			if alignment.positions[0] < insertion.position and alignment.positions[-1] > insertion.position:
 				splits.append(self.determineSupportInsertionSingleAlignment(insertion, alignment))
 				splits_prob.append(1.0 - convertPhredScore(alignment.mapq))
