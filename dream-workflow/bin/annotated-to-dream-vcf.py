@@ -70,6 +70,9 @@ def main():
         endpos = pos + len(ref) - 1
 
         #print(chrom, pos, idd, ref, alt, qual, filterr, info['CALL'], svlen, endpos)
+        #print(info, file=sys.stderr)
+        if not 'CALL' in info or not 'POSTERIOR_PROB' in info:
+            continue
         
         somatic = (info['CALL'][0] == 'SOMATIC')
         
@@ -86,7 +89,7 @@ def main():
 
         dream_vcf.write('%s\t%d\t%s\t%s\t%s\t.\t%s\tSOMATIC;END=%d;SVLEN=%d\n' % (chrom, pos, idd, ref, alt, filterr, endpos, svlen))
 
-    print("Overall %d somatic calls" % (i))
+    print("Overall %d somatic calls" % (i), file=sys.stderr)
         
 if __name__ == '__main__':
     sys.exit(main())
