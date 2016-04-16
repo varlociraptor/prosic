@@ -87,7 +87,7 @@ def main():
         if (i % 100 == 0):
             print("Found %d somatic calls so far" % (i)) 
 
-        dream_vcf.write('%s\t%d\t%s\t%s\t%s\t.\t%s\tSOMATIC;END=%d;SVLEN=%d\n' % (chrom, pos, idd, ref, alt, filterr, endpos, svlen))
+        dream_vcf.write('%s\t%d\t%s\t%s\t%s\t.\tPASS\tSOMATIC;END=%d;SVLEN=%d\n' % (chrom, pos, idd, ref, alt, endpos, svlen))
 
     print("Overall %d somatic calls" % (i), file=sys.stderr)
         
