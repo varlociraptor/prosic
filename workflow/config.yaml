@@ -3,12 +3,12 @@ reference: ../../data/ref/hg19.ucsc.fa
 datasets:
   # Tumor-Normal cell-line data from Illumina Basespace
   HCC22118C-vs-HCC22118BL:
-    tumor: "../../data/basemount/Projects/HiSeq 2000: Tumor Normal WGS (HCC1187 & HCC2218)/AppResults/Tumor Sample/Files/HCC2218C_S1.bam"
-    normal: "../../data/basemount/Projects/HiSeq 2000: Tumor Normal WGS (HCC1187 & HCC2218)/AppResults/Normal Sample/Files/HCC2218BL_S1.bam"
+    tumor: "bams/HCC22118C-vs-HCC22118BL/tumor.bam"
+    normal: "bams/HCC22118C-vs-HCC22118BL/normal.bam"
     aligner: "default"
   HCC1187C-vs-HCC1187BL:
-    tumor: "../../data/basemount/Projects/HiSeq 2000: Tumor Normal WGS (HCC1187 & HCC2218)/AppResults/Tumor Sample (2)/Files/HCC1187C_S1.bam"
-    normal: "../../data/basemount/Projects/HiSeq 2000: Tumor Normal WGS (HCC1187 & HCC2218)/AppResults/Normal Sample (2)/Files/HCC1187BL_S1.bam" 
+    tumor: "bams/HCC1187C-vs-HCC1187BL/tumor.bam"
+    normal: "bams/HCC1187C-vs-HCC1187BL/normal.bam" 
     aligner: "default"
 
 
