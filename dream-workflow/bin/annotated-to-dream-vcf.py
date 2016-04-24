@@ -47,7 +47,7 @@ def main():
     dream_vcf.write('##INFO=<ID=SVLEN,Number=.,Type=Integer,Description="Difference in length between REF and ALT alleles">\n')
     dream_vcf.write('#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n')
 
-    i = 0
+    i, j, k = 0, 0, 0
     for vcf_record in vcf_reader:
         #vcf_record = vcf_reader.next()
 
@@ -62,9 +62,25 @@ def main():
         alt = vcf_record.ALT[0]
         qual = vcf_record.QUAL
         filterr = vcf_record.FILTER
-        if len(filterr) == 0:
-            filterr = 'PASS'
+        #if len(filterr) > 0: # FILTER other than ['PASS']
+        #    continue
+        if filterr == None or len(filterr) == 0:
+            fstr = 'PASS'
+        else:
+            fstr = ''
+            for x in filterr[:-1]:
+                fstr += "%s;" % (x)
+            fstr += filterr[-1]
+            
         info = vcf_record.INFO
+
+        if not info['SVTYPE'] in ['INS','DEL'] or str(alt)[0] == '<':
+            #print(info['SVTYPE'],file=sys.stderr)
+            #print("continuing, found structvar...",file=sys.stderr)
+            j += 1
+            continue
+
+        #print(str(alt), file=sys.stderr)
         
         svlen = len(alt) - len(ref)
         endpos = pos + len(ref) - 1
@@ -72,23 +88,56 @@ def main():
         #print(chrom, pos, idd, ref, alt, qual, filterr, info['CALL'], svlen, endpos)
         #print(info, file=sys.stderr)
         if not 'CALL' in info or not 'POSTERIOR_PROB' in info:
+            k += 1
+            #print("continuing, no call specification, no probability...",file=sys.stderr)
             continue
-        
+        #print(info['CALL'],file=sys.stderr)
         somatic = (info['CALL'][0] == 'SOMATIC')
         
         if not somatic:
             continue
         else:
-            posteriorprob = float(info['POSTERIOR_PROB'][0])
-            if posteriorprob < minmapp:
-                continue
-        
+            #print("Somatic!!!", file=sys.stderr)
+            vaf = float(info['MAP_CANCER_VAF'][0])
+            prob = float(info['POSTERIOR_PROB'][0])
+            #if prob < minmapp:
+            #    continue
+
+        # writing original genotypes, if available
+
+        hgt = vcf_record.genotype('normal')['GT']
+        if not hgt == '0/0':
+            continue
+#        if tgt in ['1/0','0/1']:
+#            tgt = 0.5
+#        elif tgt == '0/0':
+#            tgt = 0.0
+#        elif tgt == '1/1':
+#            tgt = 1.0
+#        else:
+#            continue
+#        tad = vcf_record.genotype('tumor')['AD']
+#        
+#        hgt = vcf_record.genotype('normal')['GT']
+#        if hgt in ['1/0','0/1']:
+#            hgt = 0.5
+#        elif hgt == '0/0':
+#            hgt = 0.0
+#        elif hgt == '1/1':
+#            hgt = 1.0
+#        else:
+#            continue
+#        had = vcf_record.genotype('normal')['AD']
+
         i += 1
         if (i % 100 == 0):
             print("Found %d somatic calls so far" % (i)) 
 
-        dream_vcf.write('%s\t%d\t%s\t%s\t%s\t.\tPASS\tSOMATIC;END=%d;SVLEN=%d\n' % (chrom, pos, idd, ref, alt, endpos, svlen))
+#        dream_vcf.write('%s\t%d\t%s\t%s\t%s\t.\t%s\tSOMATIC;END=%d;SVLEN=%d;VAF=%.6f;PROB=%.8f;TGT=%.2f;TAD=%d,%d;HGT=%.2f;HAD=%d,%d\n' % (chrom, pos, idd, ref, alt, fstr, endpos, svlen, vaf, prob, tgt, int(tad[0]), int(had[1]), hgt, int(had[0]), int(had[1])))
+        dream_vcf.write('%s\t%d\t%s\t%s\t%s\t.\t%s\tSOMATIC;END=%d;SVLEN=%d;VAF=%.6f;PROB=%.8f\n' % (chrom, pos, idd, ref, alt, fstr, endpos, svlen, vaf, prob))
 
+    print("Found %d structural variants" % (j), file=sys.stderr)
+    print("%d indels not annotated" % (k), file=sys.stderr)
     print("Overall %d somatic calls" % (i), file=sys.stderr)
         
 if __name__ == '__main__':
