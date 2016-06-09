@@ -3,7 +3,7 @@ from __future__ import print_function, division
 from optparse import OptionParser
 import os
 import sys
-import cyvcf
+import vcf
 import pysam
 import numpy as np
 
