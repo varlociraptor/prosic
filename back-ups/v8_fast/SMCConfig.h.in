@@ -1,3 +1,0 @@
-// the configured options and settings for Tutorial
-#define SMC_VERSION_MAJOR @SMC_VERSION_MAJOR@
-#define SMC_VERSION_MINOR @SMC_VERSION_MINOR@

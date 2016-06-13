@@ -1,3 +1,0 @@
-##fileformat=VCFv4.1
-##source=deletionlist-to-vcf.py
-#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	default

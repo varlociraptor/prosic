@@ -33,10 +33,10 @@ include_directories(${GMP_INCLUDE_DIR})
 set(LIBS ${LIBS} ${GMP_LIBRARIES})
 
 
-add_executable(sm_caller ${SOURCES})
-target_link_libraries (sm_caller ${LIBS})
+add_executable(prosic-call ${SOURCES})
+target_link_libraries (prosic-call ${LIBS})
 
-install (TARGETS sm_caller DESTINATION "${PROJECT_SOURCE_DIR}/bin")
+install (TARGETS prosic-call DESTINATION "${PROJECT_SOURCE_DIR}/bin")
 install (FILES "${PROJECT_BINARY_DIR}/config.h" DESTINATION "${PROJECT_SOURCE_DIR}/include")
 install (FILES "src/smc_input.h" DESTINATION "${PROJECT_SOURCE_DIR}/include")
 install (FILES "src/smc_likelihood.h" DESTINATION "${PROJECT_SOURCE_DIR}/include")
