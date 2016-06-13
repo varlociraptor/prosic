@@ -96,7 +96,7 @@ def main():
 						help="Discards any split read observations for any deletion that exceeds the given length. (Overwrites default dictated by the aligner used)")
 	parser.add_option("-S", action="store", dest="ins_split_threshold", default=None, type=int,
 						help="Discards any split read observations for any insertion that exceeds the given length. (Overwrites default dictated by the aligner used)")
-        parser.add_option("--chrom", action="store", dest="chrom", default=None, type=str, help="Only consider given chromosome.")
+	parser.add_option("--chrom", action="store", dest="chrom", default=None, type=str, help="Only consider given chromosome.")
 
 	(options, args) = parser.parse_args()
 	
@@ -137,7 +137,7 @@ def main():
 		exit()
 
 
-        records = vcf_reader if options.chrom is None else vcf_reader.fetch(options.chrom)
+	records = vcf_reader if options.chrom is None else vcf_reader.fetch(options.chrom)
 	# Walk through all records in the VCF file
 	for vcf_record in records:
 		if len(vcf_record.ALT) != 1: # records with several alternatives are ignored.
