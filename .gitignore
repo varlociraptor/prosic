@@ -7,5 +7,5 @@ literature/*
 CMakeCache.txt
 CMakeFiles
 Makefile
-bin/sm_caller
+bin/prosic-call
 cmake_install.cmake
