@@ -1,5 +1,6 @@
 channels:
   - bioconda
+  - r
 dependencies:
   - snakemake
   - pyyaml
@@ -7,3 +8,4 @@ dependencies:
   - pysam ==0.9.0
   - numpy
   - picard
+  - samtools
