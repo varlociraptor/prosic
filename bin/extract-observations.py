@@ -109,7 +109,7 @@ def main():
 	bam_healthy_filename 	= os.path.abspath(args[2])
 	bam_cancer_filename 	= os.path.abspath(args[3])
 
-	vcf_reader 		= vcf.Reader(open(vcf_filename))
+	vcf_reader 		= vcf.Reader(vcf_filename)
 
 	# allocate memory
 	bam_healthy_processor, bam_cancer_processor = None, None
