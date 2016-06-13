@@ -96,6 +96,8 @@ def main():
 						help="Discards any split read observations for any deletion that exceeds the given length. (Overwrites default dictated by the aligner used)")
 	parser.add_option("-S", action="store", dest="ins_split_threshold", default=None, type=int,
 						help="Discards any split read observations for any insertion that exceeds the given length. (Overwrites default dictated by the aligner used)")
+	parser.add_option("--chrom", action="store", dest="chrom", default=None, type=str, help="Only consider given chromosome.")
+
 	(options, args) = parser.parse_args()
 	
 	if (len(args)!=4):
@@ -107,7 +109,7 @@ def main():
 	bam_healthy_filename 	= os.path.abspath(args[2])
 	bam_cancer_filename 	= os.path.abspath(args[3])
 
-	vcf_reader 		= vcf.Reader(open(vcf_filename))
+	vcf_reader 		= vcf.Reader(filename=vcf_filename)
 
 	# allocate memory
 	bam_healthy_processor, bam_cancer_processor = None, None
@@ -132,10 +134,12 @@ def main():
 		bam_cancer_processor = DefaultBAMProcessor(bam_cancer_filename, search_range = options.search_range, primary_alignments_only = options.primary_only, centerpoints_thres_del = options.centerpoints_distance_thres_del, centerpoints_thres_ins = options.centerpoints_distance_thres_ins, length_thres_del = options.length_thres_del, length_thres_ins = options.length_thres_ins) 
 	else: 
 		print('ERROR: aligner %s was not recognized. Options are: laser, bwa or default'%aligner)
-		exit() 
-		
+		exit()
+
+
+	records = vcf_reader if options.chrom is None else vcf_reader.fetch(options.chrom)
 	# Walk through all records in the VCF file
-	for vcf_record in vcf_reader:  
+	for vcf_record in records:
 		if len(vcf_record.ALT) != 1: # records with several alternatives are ignored.
 			continue 
 		is_deletion 	= isDeletion(vcf_record) 
