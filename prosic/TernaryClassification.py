@@ -6,7 +6,7 @@ import numpy as np
 __author__ = "Louis Dijkstra"
 
 """
-	Contains the functionality needed to plot the results of a ternary classification task, 
+	Contains the functionality needed to plot the results of a ternary classification task,
 	e.g., somatic/germline/not present or absent/heterozygous/homozygous.
 """
 
@@ -30,12 +30,12 @@ def returnFancyIntervalString(interval):
 			return r"$\leq$" + str(interval[1])
 	elif interval[1] is None: # >= interval[0]
 			return r"$\geq$" + str(interval[0])
-	return str(interval[0]) + '-'  + str(interval[1]) 
+	return str(interval[0]) + '-'  + str(interval[1])
 
 
 def plotTernaryClassification (class1, class2, class3, length_ranges, class_names = ['not present', 'heterozygous', 'homozygous'], width = .9):
-	layer1, layer2, layer3, labels = [], [], [], [] 
-	
+	layer1, layer2, layer3, labels = [], [], [], []
+
 	for i in range(len(length_ranges)):
 		layer1.append(class1[i][0])
 		layer2.append(class1[i][1])
@@ -72,7 +72,7 @@ def plotTernaryClassification (class1, class2, class3, length_ranges, class_name
 
 	x_min,x_max,y_min,y_max = plt.axis()
 	plt.axis((x_min, x_max, 0, 100))
-	
+
 	plt.xticks(ind + width / 2.0, labels)
 
 	plt.yticks(np.arange(0,101,20), ('0%', '20%', '40%', '60%', '80%', '100%'))

@@ -2,39 +2,39 @@
 from __future__ import print_function, division
 import vcf
 from collections import defaultdict
-import pysam 
-import numpy as np 
+import pysam
+import numpy as np
 
-from Indel import *
-from Alignments import *
+from prosic.Indel import *
+from prosic.Alignments import *
 
 __author__ = "Louis Dijkstra"
 
 
 """
-	BAMProcessor.py contains the BAMProcessor superclass. It contains all the 
-	functionality that all BAM Processors have in common, i.e., every other 
-	BAMProcessor class is derived from this one. 
+	BAMProcessor.py contains the BAMProcessor superclass. It contains all the
+	functionality that all BAM Processors have in common, i.e., every other
+	BAMProcessor class is derived from this one.
 """
 
-class BAMProcessor: 
+class BAMProcessor:
 	"""Superclass for processing BAM files."""
 
 	def __init__(self, bam_filename, search_range = 5000, primary_alignments_only = False):
 		self.bam_reader 		= pysam.Samfile(bam_filename, "rb")
 		self.search_range 		= search_range # range in which one searches for alignments
 		self.primary_alignments_only 	= primary_alignments_only # when True, only primary alignments are considered
-		
-	def determineSupportDeletionSingleAlignment(self, deletion, alignment): 
+
+	def determineSupportDeletionSingleAlignment(self, deletion, alignment):
 		"Needs to be implemented in the subclass"
-		pass 
+		pass
 
-	def determineSupportInsertionSingleAlignment(self, insertion, alignment): 
+	def determineSupportInsertionSingleAlignment(self, insertion, alignment):
 		"Needs to be implemented in the subclass"
-		pass 
+		pass
 
 
-	def close(self): 
+	def close(self):
 		"""Closes the BAM file."""
 		self.bam_reader.close()
 
@@ -45,12 +45,12 @@ class BAMProcessor:
 		elif isInsertion(vcf_record):
 			return processInsertion (self, Insertion(vcf_record))
 		else:
-			assert False 
+			assert False
 
 	def processDeletion(self, deletion):
 		"""Collects the evidence (both overlapping and internal segment based) for a given deletion."""
 		isize, isize_prob, splits, splits_prob = [], [], [], []
-		
+
 		alignment_dict = defaultdict(list)
 
 		# fetch the alignments in the vicinity of the deletion
@@ -59,10 +59,10 @@ class BAMProcessor:
 				continue
 			if self.primary_alignments_only and (alignment.is_secondary): ## (XXX) construction site
 				continue
-			# determine whether this individual read is relevant 		
+			# determine whether this individual read is relevant
 			if alignment.positions == []:
-				continue	
-			if alignment.positions[0] < min(deletion.centerpoints) and alignment.positions[-1] > max(deletion.centerpoints): # read overlaps the centerpoints of the deletion 
+				continue
+			if alignment.positions[0] < min(deletion.centerpoints) and alignment.positions[-1] > max(deletion.centerpoints): # read overlaps the centerpoints of the deletion
 				splits.append(self.determineSupportDeletionSingleAlignment(deletion, alignment))
 				splits_prob.append(1.0 - convertPhredScore(alignment.mapq))
 			else:
@@ -70,7 +70,7 @@ class BAMProcessor:
 
 		# walk through the paired-end reads
 		for qname, alignments in alignment_dict.items():
-			if len(alignments) == 2: # paired-end read 
+			if len(alignments) == 2: # paired-end read
 				align_l, align_r = alignments[0], alignments[1]
 				if align_r.positions[-1] < align_l.positions[0]:
 					temp = align_r
@@ -87,7 +87,7 @@ class BAMProcessor:
 	def processInsertion(self, insertion):
 		"""Collects the evidence (both overlapping and internal segment based) for a given deletion."""
 		isize, isize_prob, splits, splits_prob = [], [], [], []
-		
+
 		alignment_dict = defaultdict(list)
 
 		# fetch the alignments in the vicinity of the deletion
@@ -96,9 +96,9 @@ class BAMProcessor:
 				continue
 			if self.primary_alignments_only and (alignment.is_secondary): ## (XXX) construction site
 				continue
-			# determine whether this individual read is relevant 		
+			# determine whether this individual read is relevant
 			if alignment.positions == []:
-				continue	
+				continue
 			if alignment.positions[0] < insertion.position and alignment.positions[-1] > insertion.position:
 				splits.append(self.determineSupportInsertionSingleAlignment(insertion, alignment))
 				splits_prob.append(1.0 - convertPhredScore(alignment.mapq))
@@ -107,7 +107,7 @@ class BAMProcessor:
 
 		# walk through the paired-end reads
 		for qname, alignments in alignment_dict.items():
-			if len(alignments) == 2: # paired-end read 
+			if len(alignments) == 2: # paired-end read
 				align_l, align_r = alignments[0], alignments[1]
 				if align_r.positions[-1] < align_l.positions[0]:
 					temp = align_r
@@ -120,4 +120,3 @@ class BAMProcessor:
 					isize_prob.append((1.0 - convertPhredScore(align_l.mapq)) * (1.0 - convertPhredScore(align_r.mapq)))
 
 		return np.array(isize), np.array(isize_prob), np.array(splits), np.array(splits_prob)
-

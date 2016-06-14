@@ -7,23 +7,23 @@ __author__ = "Louis Dijkstra"
 	Classes for working with nxn contingency tables.
 """
 
-class Table: 
+class Table:
 
 	def __init__(self, n_rows, n_columns):
 		self.n_rows = n_rows
 		self.n_columns = n_columns
-		self.table = [[0 for i in range(n_columns)] for j in range(n_rows)] 
-		self.total = 0 
-		
+		self.table = [[0 for i in range(n_columns)] for j in range(n_rows)]
+		self.total = 0
+
 	def add(self, row,column):
 		self.table[row][column] += 1
 		self.total += 1
 
 	def print(self):
-		print(self.table) 
-	
+		print(self.table)
+
 class SquareTable(Table):
-	
+
 	def __init__(self, n_classes):
 		Table.__init__(self, n_classes, n_classes)
 
@@ -33,14 +33,14 @@ class SquareTable(Table):
 			return '-'
 		for i in range(self.n_rows):
 			total_diagonal += self.table[i][i]
-		
+
 		return float(total_diagonal) / float(self.total)
 
 	def print(self):
-		print(self.table) 
+		print(self.table)
 
 class Table3x3(SquareTable):
-	
+
 	def __init__(self):
 		SquareTable.__init__(self, 3)
 
@@ -49,13 +49,13 @@ class Table3x3(SquareTable):
 		row_total, column_total, total = [0,0,0], [0,0,0], 0
 		# compute the marignals and the total
 		for r in [0,1,2]:
-			for c in [0,1,2]:		
+			for c in [0,1,2]:
 				row_total[r] 	+= self.table[r][c]
 				column_total[c] += self.table[r][c]
 				total 		+= self.table[r][c]
 
 		n_correct = 0 # number of correctly classified item
-		for i in [0,1,2]: 
+		for i in [0,1,2]:
 			n_correct += self.table[i][i] # on the diagonal
 
 		print('------------------------' + title + '------------------------')
@@ -69,7 +69,7 @@ class Table3x3(SquareTable):
 		print('\t\ttotal\t|\t', column_total[0], '\t|\t', column_total[1], '\t|\t', column_total[2], '\t|\t', total)
 		if total != 0:
 			print('\ncorrectly classified:\t', n_correct, ' /', n_correct / float(total) * 100.0, '%\n')
-		else: 
+		else:
 			print('\n')
 
 class Table2x2(SquareTable):
@@ -77,7 +77,7 @@ class Table2x2(SquareTable):
 	def __init__(self):
 		SquareTable.__init__(self, 2)
 
-	def returnRecallPrecision(self): 
+	def returnRecallPrecision(self):
 		"""Returns the recall and precision. Returns 'None' when not defined"""
 		recall, precision = None, None
 		column_total	= self.table[0][0] + self.table[1][0]
@@ -93,7 +93,7 @@ class Table2x2(SquareTable):
 		row_total, column_total, total = [0,0], [0,0], 0
 		# compute the marignals and the total
 		for r in [0,1]:
-			for c in [0,1]:		
+			for c in [0,1]:
 				row_total[r] 	+= self.table[r][c]
 				column_total[c] += self.table[r][c]
 				total 		+= self.table[r][c]
@@ -103,11 +103,9 @@ class Table2x2(SquareTable):
 		print('\t\t|\t', labels[0], '\t\t|\t', labels[1], '\t|\ttotal')
 		print('--------------------------------------------------------------------------------------------')
 		print(labels[0], '\t\t|\t', self.table[0][0], '\t\t|\t', self.table[0][1], '\t\t|\t', row_total[0])
-		print(labels[1], '\t\t|\t', self.table[1][0], '\t\t|\t', self.table[1][1], '\t\t|\t', row_total[1])	
+		print(labels[1], '\t\t|\t', self.table[1][0], '\t\t|\t', self.table[1][1], '\t\t|\t', row_total[1])
 		print('--------------------------------------------------------------------------------------------')
 		print('total\t\t|\t', column_total[0], '\t\t|\t', column_total[1], '\t\t|\t', total)
 		print('\nrecall:\t\t', recall)
-		print('precision:\t', precision)	
+		print('precision:\t', precision)
 		print('-------------------------------------------------------------------\n\n')
-		
-

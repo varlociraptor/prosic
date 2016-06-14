@@ -5,8 +5,8 @@ import vcf
 __author__ = "Louis Dijkstra"
 
 """
-	Indel.py contains the classes/functions for working with VCF files. 
-	Used by the VAF Estimator and the Somatic Mutation Caller. 
+	Indel.py contains the classes/functions for working with VCF files.
+	Used by the VAF Estimator and the Somatic Mutation Caller.
 """
 
 def returnMinimumDifference (list1, list2):
@@ -26,12 +26,12 @@ def isDeletion (vcf_record):
 	"""Determines whether a vcf record represents a deletion or not. NOTE: only considers first alternative (ALT[0]); others are neglected"""
 	if 'SVTYPE' in vcf_record.INFO: # checks whether the key SVTYPE is present in INFO
 		if isinstance(vcf_record.INFO['SVTYPE'], list):
-			if vcf_record.INFO['SVTYPE'][0] == 'DEL':	
+			if vcf_record.INFO['SVTYPE'][0] == 'DEL':
 				return True
 		else:
-			if vcf_record.INFO['SVTYPE'] == 'DEL':	
+			if vcf_record.INFO['SVTYPE'] == 'DEL':
 				return True
-	else: # makes statement on the basis of length of ALT and REF 
+	else: # makes statement on the basis of length of ALT and REF
 		if len(vcf_record.REF) > 1 and len(vcf_record.ALT[0]) == 1:
 			return True
 	return False
@@ -40,12 +40,12 @@ def isInsertion (vcf_record):
 	"""Determines whether a vcf record represents an insertion or not. NOTE: only considers first alternative (ALT[0]); others are neglected"""
 	if 'SVTYPE' in vcf_record.INFO: # checks whether the key SVTYPE is present in INFO
 		if isinstance(vcf_record.INFO['SVTYPE'], list):
-			if vcf_record.INFO['SVTYPE'][0] == 'INS':	
+			if vcf_record.INFO['SVTYPE'][0] == 'INS':
 				return True
 		else:
-			if vcf_record.INFO['SVTYPE'] == 'INS':	
+			if vcf_record.INFO['SVTYPE'] == 'INS':
 				return True
-	else: # makes statement on the basis of length of ALT and REF 
+	else: # makes statement on the basis of length of ALT and REF
 		if len(vcf_record.REF) == 1 and len(vcf_record.ALT[0]) > 1:
 			return True
 	return False
@@ -54,37 +54,37 @@ def isSNP (vcf_record):
 	"""Determines whether a vcf record represents a SNP or not."""
 	if len(vcf_record.REF) == 1 and len(vcf_record.ALT[0]) == 1:
 		return True
-	return False 
+	return False
 
 def returnIndelLength (vcf_record):
 	"""Returns variation length of an indel given its vcf record"""
 	if 'SVLEN' in vcf_record.INFO:
 		if isinstance(vcf_record.INFO['SVLEN'], list):
-			return abs(int(vcf_record.INFO['SVLEN'][0])) 
+			return abs(int(vcf_record.INFO['SVLEN'][0]))
 		else:
-			return abs(int(vcf_record.INFO['SVLEN'])) 
+			return abs(int(vcf_record.INFO['SVLEN']))
 	else:
 		return abs(len(vcf_record.REF) - len(vcf_record.ALT[0]))
 
 def getDelta (vcf_record):
 	"""Returns the delta (variant length) of an indel. Is positive in case of a deletion and negative for an insertion."""
-	if isDeletion(vcf_record): 
+	if isDeletion(vcf_record):
 		return returnIndelLength(vcf_record)
 	return -1.0 * returnIndelLength(vcf_record)
 
-class Indel: 
+class Indel:
 	"""Class for representing an indel (deletion/insertion)."""
 	def __init__(self, vcf_record):
-		self.vcf_record = vcf_record 
+		self.vcf_record = vcf_record
 		self.chromosome = str(vcf_record.CHROM)
 		self.length 	= returnIndelLength(vcf_record)
 
 	def getTrueVAF (self):
 		"""Returns true variant allele frequency as given in VCF file."""
 		if self.vcf_record.heterozygosity == 0.5:
-			return 0.5 
+			return 0.5
 		else:
-			return 1.0	
+			return 1.0
 
 	def isDeletion(self):
 		"""Returns True when indel is a deletion, False otherwise"""
@@ -99,7 +99,7 @@ class Indel:
 			if self.length > upper:
 				return False
 		return True
-	
+
 class Deletion(Indel):
 	"""Class for representing a deletion. """
 	def __init__(self, vcf_record):
@@ -108,9 +108,9 @@ class Deletion(Indel):
 		self.start = self.vcf_record.POS + 1
 		self.end   = self.start + self.length - 1
 		# centerpoints are the points in the middle of the deletion; when length is even, there are two, otherwise one
-		if self.length % 2 == 0: 
+		if self.length % 2 == 0:
 			self.centerpoints = [self.start + self.length / 2 - 1, self.start + self.length / 2]
-		else: 
+		else:
 			self.centerpoints = [self.start + self.length / 2]
 
 	def print(self):
@@ -133,7 +133,7 @@ class Insertion(Indel):
 	"""Class for represenitng an insertion."""
 	def __init__(self, vcf_record):
 		Indel.__init__(self, vcf_record)
-		self.position = vcf_record.POS 
+		self.position = vcf_record.POS
 
 	def print(self):
 		"""Prints most relevant data on the deletion to standard output"""
@@ -149,5 +149,3 @@ class Insertion(Indel):
 
 	def returnDifferenceInCenterpoints(self, other_insertion):
 		return returnMinimumDifference([self.position, self.position + 1], [other_insertion.position, other_insertion.position + 1])
-
-	
