@@ -7,8 +7,6 @@ import vcf
 import pysam
 import numpy as np
 
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__))[:-3] + 'python')
-
 from Indel import *
 from Alignments import *
 from DefaultBAMProcessor import *
