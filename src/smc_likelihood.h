@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <math.h>
 
+#ifndef INFINITY
+# define INFINITY    __builtin_inf()
+#endif
+
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_min.h>
 #include <gsl/gsl_errno.h>
