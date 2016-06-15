@@ -16,23 +16,26 @@ With Bioconda set up, PROSIC can be installed via
 
 PROSIC uses the following C libraries:
 
-* The GNU scientific library (GSL - see http://www.gnu.org/software/gsl/), in particular:
+* The GNU scientific library ([GSL](http://www.gnu.org/software/gsl/)), in particular:
 	* `gsl_math.h`,
 	* `gsl_min.h` and
 	* `gsl_errno.h`.
 
-* The GMP library for arbitrary precision arithmetic, see https://gmplib.org/.
+* The [GMP](https://gmplib.org/) library for arbitrary precision arithmetic.
 
 Further, the PROSIC depends on the following Python packages:
 
-* PySAM (see https://code.google.com/p/pysam/) for working with BAM/SAM files and
-* PyVCF (see https://github.com/jamescasbon/PyVCF) for working with VCF files.
+* [PySAM](https://code.google.com/p/pysam/) for working with BAM/SAM files and
+* [PyVCF](https://github.com/jamescasbon/PyVCF) for working with VCF files.
 
-In order to compile the C-code in the folder `src/`, simply type in the main directory:
+To install PROSIC from source, issue the following commands:
 
 	$ cmake CMakeLists.txt && make
+	$ cp bin/prosic-call $BIN_PATH
+	$ python setup.py install --user
 
-The executable `prosic-call` will be placed in the `bin/` folder together with the Python scripts
+Where `$BIN_PATH` should be a folder in your `$PATH`, e.g. `~/.local/bin`.
+After that, you will have access to the three commands `prosic-call`,
 `prosic-extract-observations` and `prosic-annotate`.
 
 
