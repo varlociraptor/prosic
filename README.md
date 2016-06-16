@@ -29,7 +29,7 @@ Then, calling with PROSIC consists of three steps.
 First, we extract informations about relevant variants and the corresponding alignments from
 the VCF and the corresponding BAM files:
 
-  $ prosic-extract-observations $ALIGNER pre-calls.vcf tumor.bam normal.bam > observations.txt
+	$ prosic-extract-observations $ALIGNER pre-calls.vcf tumor.bam normal.bam > observations.txt
 
 See `prosic-extract-observations --help` for information about the valid values of
 `$ALIGNER` and other parameters.
@@ -38,13 +38,13 @@ See `prosic-extract-observations --help` for information about the valid values 
 
 Second, the significance of mutations is assessed via
 
-  $ prosic-call observations.txt > calls.txt
+	$ prosic-call observations.txt > calls.txt
 
 ### Step 3: annotation
 
 Finally, the initial VCF file is annotated with the somatic mutation calls from PROSIC:
 
-  $ prosic-annotate pre-calls.vcf calls.txt > calls.vcf
+	$ prosic-annotate pre-calls.vcf calls.txt > calls.vcf
 
 Thereby, each indel in the resulting VCF is classified into `CALL=SOMATIC` or `CALL=GERMLINE` and the
 posterior probability for the selected event is provided in the field `POSTERIOR_PROB`.
