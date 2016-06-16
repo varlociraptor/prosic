@@ -55,17 +55,13 @@ posterior probability for the selected event is provided in the field `POSTERIOR
 
 PROSIC uses the following C libraries:
 
-* The GNU scientific library ([GSL](http://www.gnu.org/software/gsl/)), in particular:
-	* `gsl_math.h`,
-	* `gsl_min.h` and
-	* `gsl_errno.h`.
-
-* The [GMP](https://gmplib.org/) library for arbitrary precision arithmetic.
+* The GNU scientific library ([GSL](http://www.gnu.org/software/gsl/))
+* The [GMP](https://gmplib.org/) library for arbitrary precision arithmetic
 
 Further, the PROSIC depends on the following Python packages:
 
-* [PySAM](https://code.google.com/p/pysam/) for working with BAM/SAM files and
-* [PyVCF](https://github.com/jamescasbon/PyVCF) for working with VCF files.
+* [PySAM](https://code.google.com/p/pysam/) for working with BAM/SAM files
+* [PyVCF](https://github.com/jamescasbon/PyVCF) for working with VCF files
 
 To install PROSIC from source, issue the following commands:
 
@@ -74,9 +70,6 @@ To install PROSIC from source, issue the following commands:
 	$ python setup.py install --user
 
 Where `$BIN_PATH` should be a folder in your `$PATH`, e.g. `~/.local/bin`.
-After that, you will have access to the three commands `prosic-call`,
-`prosic-extract-observations` and `prosic-annotate`.
-
 
 ## Author
 
