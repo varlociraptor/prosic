@@ -40,6 +40,8 @@ Second, the significance of mutations is assessed via
 
 	$ prosic-call observations.txt > calls.txt
 
+See `prosic-call -h` for information about parameters.
+
 ### Step 3: annotation
 
 Finally, the initial VCF file is annotated with the somatic mutation calls from PROSIC:
