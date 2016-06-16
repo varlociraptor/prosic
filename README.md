@@ -7,7 +7,7 @@
 
 ### Via Bioconda
 
-PROSIC will soon be available via [Bioconda](https://bioconda.github.io), a distribution
+PROSIC is available via [Bioconda](https://bioconda.github.io), a distribution
 of bioinformatics software for the conda package manager.
 Bioconda can be set up in any Linux environment, even without admin rights.
 With Bioconda set up, PROSIC can be installed via
