@@ -25,6 +25,14 @@ class BAMProcessor:
 		self.search_range 		= search_range # range in which one searches for alignments
 		self.primary_alignments_only 	= primary_alignments_only # when True, only primary alignments are considered
 
+	def filter_alignment(self, alignment):
+		return not (
+			alignment.is_duplicate or
+			alignment.is_unmapped or
+			(self.primary_alignments_only and alignment.is_secondary) or
+			not alignment.positions
+		)
+
 	def determineSupportDeletionSingleAlignment(self, deletion, alignment):
 		"Needs to be implemented in the subclass"
 		pass
@@ -54,15 +62,16 @@ class BAMProcessor:
 		alignment_dict = defaultdict(list)
 
 		# fetch the alignments in the vicinity of the deletion
-		for alignment in self.bam_reader.fetch(deletion.chromosome, max(0, deletion.start - 1 - self.search_range), deletion.end + 1 + self.search_range):
-			if alignment.isize == 0: # alignment is unmapped
-				continue
-			if self.primary_alignments_only and (alignment.is_secondary): ## (XXX) construction site
-				continue
-			# determine whether this individual read is relevant
-			if alignment.positions == []:
-				continue
-			if alignment.positions[0] < min(deletion.centerpoints) and alignment.positions[-1] > max(deletion.centerpoints): # read overlaps the centerpoints of the deletion
+		for alignment in filter(
+			self.filter_alignment,
+			self.bam_reader.fetch(
+				deletion.chromosome,
+				max(0, deletion.start - 1 - self.search_range),
+				deletion.end + 1 + self.search_range
+			)
+		):
+			if alignment.positions[0] < deletion.centerpoints[0] and alignment.positions[-1] > deletion.centerpoints[-1]:
+				# read overlaps the centerpoints of the deletion
 				splits.append(self.determineSupportDeletionSingleAlignment(deletion, alignment))
 				splits_prob.append(1.0 - convertPhredScore(alignment.mapq))
 			else:
@@ -90,15 +99,15 @@ class BAMProcessor:
 
 		alignment_dict = defaultdict(list)
 
-		# fetch the alignments in the vicinity of the deletion
-		for alignment in self.bam_reader.fetch(insertion.chromosome, max(0, insertion.position - self.search_range), insertion.position + 1 + self.search_range):
-			if alignment.isize == 0: # alignment is unmapped
-				continue
-			if self.primary_alignments_only and (alignment.is_secondary): ## (XXX) construction site
-				continue
-			# determine whether this individual read is relevant
-			if alignment.positions == []:
-				continue
+		# fetch the alignments in the vicinity of the insertion
+		for alignment in filter(
+			self.filter_alignment,
+			self.bam_reader.fetch(
+				insertion.chromosome,
+				max(0, insertion.position - self.search_range),
+				insertion.position + 1 + self.search_range
+			)
+		):
 			if alignment.positions[0] < insertion.position and alignment.positions[-1] > insertion.position:
 				splits.append(self.determineSupportInsertionSingleAlignment(insertion, alignment))
 				splits_prob.append(1.0 - convertPhredScore(alignment.mapq))
