@@ -29,7 +29,7 @@ Then, calling with PROSIC consists of three steps.
 First, we extract informations about relevant variants and the corresponding alignments from
 the VCF and the corresponding BAM files:
 
-	$ prosic-extract-observations $ALIGNER pre-calls.vcf tumor.bam normal.bam > observations.txt
+	$ prosic-extract-observations $ALIGNER pre-calls.vcf normal.bam tumor.bam > observations.txt
 
 See `prosic-extract-observations --help` for information about the valid values of
 `$ALIGNER` and other parameters.
