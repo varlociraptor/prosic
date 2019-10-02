@@ -3,6 +3,8 @@
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)](http://bioconda.github.io/recipes/prosic/README.html)
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/prosic/badges/downloads.svg)](http://bioconda.github.io/recipes/prosic/README.html)
 
+**Prosic has been succeeded by [Varlociraptor](https://varlociraptor.github.io). Please use Varlociraptor instead.**
+
 ## Installation
 
 PROSIC is available via [Bioconda](https://bioconda.github.io), a distribution
